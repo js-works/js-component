@@ -1,6 +1,8 @@
 import determineComponentMeta from 
     '../internal/helper/determineComponentMeta';
 
+import Component from '../api/Component';
+
 import { defineComponent } from 'js-surface';
 
 export default function defineFunctionalComponent(renderFunction) {
@@ -8,12 +10,16 @@ export default function defineFunctionalComponent(renderFunction) {
         throw new Error(
             '[defineFunctionalComponent] '
                 + "First argument 'renderFunction' must be a function");
+    } else if (renderFunction.prototype instanceof Component) {
+        throw new Error(
+            '[defineFunctionalComponent] '
+                + "First argument 'renderFunction' must not be a component class");
     }
 
     let meta;
     
     try {
-        meta = determineComponentMeta(renderFunction, true);
+        meta = determineComponentMeta(renderFunction);
     } catch (error) {
         throw new Error('[defineFunctionComponent] ' + error.message);
     }

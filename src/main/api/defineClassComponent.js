@@ -16,7 +16,7 @@ export default function defineClassComponent(clazz) {
     let meta;
     
     try {
-        meta = determineComponentMeta(clazz, false);
+        meta = determineComponentMeta(clazz);
     } catch (error) {
         throw new Error('[defineClassComponent] ' + error.message);
     }

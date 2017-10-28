@@ -1,8 +1,13 @@
 import convertPropType from './convertPropType';
+import Component from '../../api/Component';
 
-export default function determineComponentMeta(subject, functional) {
+export default function determineComponentMeta(subject) {
     const
         ret = {},
+        
+        functional = typeof subject === 'function'
+            && !(subject.prototype instanceof Component),
+
         displayName = subject.displayName || 'Anonymous',
 
         propTypes = subject.propTypes,
@@ -114,7 +119,7 @@ export default function determineComponentMeta(subject, functional) {
         }
 
         if (exportedMethods.length > 0) {
-            ret.methods = exported;
+            ret.methods = exportedMethods;
         }
     }
 

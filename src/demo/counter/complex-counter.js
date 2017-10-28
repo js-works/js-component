@@ -1,73 +1,69 @@
-import {
-    createElement as h,
-    defineClassComponent,
-    defineFunctionalComponent,
-    mount
-} from 'js-glow';
+/** @jsx Reactify.createElement */
+import Reactify from 'js-reactify';
+import PropTypes from 'prop-types';
 
-import { Spec } from 'js-spec';
-
-const CounterInfo = defineFunctionalComponent({
+const counterInfoMeta = {
     displayName:  'CounterInfo',
 
-    properties: {
-        value: {
-            type: Number
-        }
-    },
-
-    render(props) {
-        return (
-            h('label',
-                h('b',
-                    props.value)));
+    propTypes: {
+        value: PropTypes.number
     }
-});
+};
+
+function CounterInfoComponent(props) {
+    return (
+        <label>
+            <b>{ props.value }</b>
+        </label>
+    );
+}
+
+const CounterInfo = Reactify.defineFunctionalComponent(
+    Object.assign(CounterInfoComponent, counterInfoMeta));
 
 // --------------------------------------------------------------------
 
-const Counter = defineClassComponent({
+const counterMeta = {
     displayName: 'Counter',
 
-    properties: {
-        initialValue: {
-            type: Number,
-            constraint: Spec.integer,
-            defaultValue: 0
-        },
-
-        onChange: {
-            type: Function,
-            nullable: true,
-            defaultValue: null
-        }
+    propTypes: {
+        initialValue: PropTypes.number,
+        onChange: PropTypes.func
     },
 
-    methods: ['resetCounter'],
-
-    constructor() {
-        this.state = { counterValue: this.props.initialValue };
+    defaultProps: {
+        initialValue: 0
     },
+
+    exportedMethods: ['resetCounter']
+};
+
+class CounterComponent extends Reactify.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { counterValue: props.initialValue };
+    }
 
     increaseCounter(delta) {
-        this.state = { counterValue: this.state.counterValue + delta };
-    },
+        this.setState({ counterValue: this.state.counterValue + delta });
+    }
 
-    shouldUpdate() {
-        console.log('[needsUpdate]', arguments);
+    shouldComponentUpdate() {
+        console.log('[shouldComponentUpdate]', arguments);
         return true;
-    },
+    }
 
-    onWillReceiveProps(nextProps) {
-        console.log('[onWillReceiveProps]', arguments);
-    },
+    componentWillReceiveProps(nextProps) {
+        console.log('[componentWillReceiveProps]', arguments);
+    }
 
-    onWillChangeState(nextState) {
-        console.log('[onWillChangeState]', arguments);
-    },
+    componentWillChangeState(nextState) {
+        console.log('[componentWillChangeState]', arguments);
+    }
 
-    onDidChangeState(prevState) {
-        console.log('[onDidChangeState]', arguments);
+    componentDidChangeState(prevState) {
+        console.log('[componentDidChangeState]', arguments);
 
         if (this.props.onChange) {
             this.props.onChange({
@@ -75,69 +71,88 @@ const Counter = defineClassComponent({
                 value: this.state.counterValue
             });
         }
-    },
+    }
 
-    onWillMount() {
-        console.log('[onWillMount]', arguments);
-    },
+    componentWillMount() {
+        console.log('[componentWillMount]', arguments);
+    }
 
-    onDidMount() {
-        console.log('[onDidMount]', arguments);
-    },
+    componentDidMount() {
+        console.log('[componentDidMount]', arguments);
+    }
 
-    onWillUpdate() {
-        console.log('[onWillUpdate]', arguments);
-    },
+    componentWillUpdate() {
+        console.log('[componentWillUpdate]', arguments);
+    }
 
-    onDidUpdate() {
-        console.log('[onDidUpdate]', arguments);
-    },
+    componentDidUpdate() {
+        console.log('[componentDidUpdate]', arguments);
+    }
 
-    onWillUnmount() {
-        console.log('[onWillUnmount]:', arguments);
-    },
+    componentWillUnmount() {
+        console.log('[componentWillUnmount]:', arguments);
+    }
 
     resetCounter(value = 0) {
         this.state = { counterValue: value };
-    },
+    }
 
     render() {
         return (
-            h('span.counter',
-                h('button.btn.btn-default',
-                    { onClick: () => this.increaseCounter(-1) },
-                    '-'),
-                h('div',
-                    { style: { width: '30px', display: 'inline-block', textAlign: 'center' }},
-                    CounterInfo({ value: this.state.counterValue })),
-                h('button.btn.btn-default',
-                    { onClick: () => this.increaseCounter(1) },
-                    '+'))
+            <span className="counter">
+                <button
+                    className="btn btn-default"
+                    onClick={ () => this.increaseCounter(-1) }
+                    >
+                    -
+                </button>
+                <div style={{ width: '30px', display: 'inline-block', textAlign: 'center' }}>
+                    <CounterInfo value= { this.state.counterValue } />
+                </div>
+                <button
+                    className="btn btn-default"
+                    onClick={ () => this.increaseCounter(1) }
+                    >
+                    +
+                </button>
+            </span>
         );
     }
-});
+}
+
+const Counter = Reactify.defineClassComponent(
+    Object.assign(CounterComponent, counterMeta));
 
 // --------------------------------------------------------------------
 
-const CounterCtrl = defineClassComponent({
+const counterCtrlMeta = {
     displayName: 'CounterCtrl',
+};
 
+class CounterCtrlComponent extends Reactify.Component {
     render() {
         let counterInstance = null;
 
         return (
-            h('div.counter-ctrl',
-                h('button.btn.btn-info',
-                    { onClick: () => counterInstance.resetCounter(0) },
-                    'Set to 0'),
-                    ' ',
-                    Counter({ ref: it => { counterInstance = it; } }),
-                    ' ',
-                    h('button.btn.btn-info',
-                        { onClick: () => counterInstance.resetCounter(100) },
-                        'Set to 100')));
-    }
-});
+            <div className="counter-ctrl">
+                <button className="btn button-info"
+                    onClick={ () => counterInstance.resetCounter(0) }>
 
-mount(CounterCtrl(), 'main-content');
+                    Set to 0
+                </button>
+                <Counter ref={ it => { counterInstance = it; } } />
+                <button className="btn button-info"
+                    onClick={ () => counterInstance.resetCounter(100) }>
+
+                    Set to 100
+                </button>
+            </div>
+        );
+    }
+}
+
+const CounterCtrl = Reactify.defineClassComponent(
+    Object.assign(CounterCtrlComponent, counterCtrlMeta));
+
+Reactify.render(CounterCtrl(), 'main-content');
 
