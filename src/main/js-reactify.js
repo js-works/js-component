@@ -1,6 +1,5 @@
 import createElement from './api/createElement';
-import defineClassComponent from './api/defineClassComponent';
-import defineFunctionalComponent from './api/defineFunctionalComponent';
+import createFactory from './api/createFactory';
 import isValidElement from './api/isValidElement';
 import render from './api/render';
 import unmountComponentAt from './api/unmountComponentAt';
@@ -10,8 +9,7 @@ import Component from './api/Component';
 
 export {
     createElement,
-    defineClassComponent,
-    defineFunctionalComponent,
+    createFactory,
     isValidElement,
     render,
     unmountComponentAt,
@@ -22,8 +20,7 @@ export {
 
 export default {
     createElement,
-    defineClassComponent,
-    defineFunctionalComponent,
+    createFactory,
     isValidElement,
     render,
     unmountComponentAt,

@@ -56,7 +56,7 @@ class CustomComponent extends Reactify.Component {
     }
 }
 
-const HelloWorld = Reactify.defineClassComponent(
+const HelloWorld = Reactify.createFactory(
     Object.assign(CustomComponent, meta));
 
-Reactify.render(HelloWorld({ name: 'John Doe' }), 'main-content');
+Reactify.render(<HelloWorld name="John Doe" />, 'main-content');

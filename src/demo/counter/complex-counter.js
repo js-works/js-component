@@ -18,7 +18,7 @@ function CounterInfoComponent(props) {
     );
 }
 
-const CounterInfo = Reactify.defineFunctionalComponent(
+const CounterInfo = Reactify.createFactory(
     Object.assign(CounterInfoComponent, counterInfoMeta));
 
 // --------------------------------------------------------------------
@@ -120,7 +120,7 @@ class CounterComponent extends Reactify.Component {
     }
 }
 
-const Counter = Reactify.defineClassComponent(
+const Counter = Reactify.createFactory(
     Object.assign(CounterComponent, counterMeta));
 
 // --------------------------------------------------------------------
@@ -151,7 +151,7 @@ class CounterCtrlComponent extends Reactify.Component {
     }
 }
 
-const CounterCtrl = Reactify.defineClassComponent(
+const CounterCtrl = Reactify.createFactory(
     Object.assign(CounterCtrlComponent, counterCtrlMeta));
 
 Reactify.render(CounterCtrl(), 'main-content');

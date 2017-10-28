@@ -75,6 +75,6 @@ class SimpleCounterComponent extends Reactify.Component {
     }
 }
 
-const SimpleCounter = Reactify.defineClassComponent(SimpleCounterComponent);
+const SimpleCounter = Reactify.createFactory(SimpleCounterComponent);
 
 Reactify.render(<SimpleCounter initialValue={100} />, 'main-content');

@@ -18,7 +18,7 @@ function render({ name }) {
     );
 }
 
-const HelloWorld = Reactify.defineFunctionalComponent(
+const HelloWorld = Reactify.createFactory(
     Object.assign(render, meta));
 
-Reactify.render(HelloWorld({ name:  'Joan Doe' }), 'main-content');
+Reactify.render(<HelloWorld name="Joan Doe"/>, 'main-content');
