@@ -1,5 +1,5 @@
 module.exports = {
-    entry: './build/src/main/js-glow.js',
+    entry: './build/src/main/js-reactify.js',
 
     externals: [{
         'js-spec': true,
@@ -8,7 +8,7 @@ module.exports = {
 
     output: {
         path: __dirname + "/dist",
-        filename: "js-glow.js",
+        filename: "js-reactify.js",
         libraryTarget: 'umd'
     }
 };

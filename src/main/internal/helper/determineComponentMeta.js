@@ -95,17 +95,18 @@ export default function determineComponentMeta(subject) {
 
             ret.properties[key] = {
                 constraint: convertPropType(contextType, key, displayName),
-                defaultValue: undefined
+                defaultValue: undefined,
+                inject: true
             };
         }           
     }
 
     if (hasChildContextTypes) {
-        if (typeof contextTypes !== 'object') {
-            throw new Error("Meta field 'contextTypes' must be an object or empty");
+        if (typeof childContextTypes !== 'object') {
+            throw new Error("Meta field 'childContextTypes' must be an object or empty");
         }
 
-        const provides = Object.keys(contextTypes);
+        const provides = Object.keys(childContextTypes);
 
         if (provides.length > 0) {
             ret.provides = provides;

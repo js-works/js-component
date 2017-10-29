@@ -43,7 +43,7 @@
   "scripts": {
     "clean": "node_modules/.bin/shx rm -rf ./build ./dist",
     "compile": "npm run clean && \"node_modules/.bin/babel\" --presets es2015 --ignore 'node_modules/*' -d build src/main/**/*.js",
-    "xxxbundle": "npm run compile && \"node_modules/.bin/shx\" mkdir -p dist && \"node_modules/.bin/browserify\" build/src/main/js-reactify.js -x 'js-spec,js-surface' -s jsGlow -o dist/js-reactify.js",
+    "xxxbundle": "npm run compile && \"node_modules/.bin/shx\" mkdir -p dist && \"node_modules/.bin/browserify\" build/src/main/js-reactify.js -x 'js-spec,js-surface' -s jsReactify -o dist/js-reactify.js",
     "bundle": "npm run compile && \"node_modules/.bin/shx\" mkdir -p dist && \"node_modules/.bin/webpack\"",
     "minimize": "npm run bundle && \"node_modules/.bin/uglifyjs\" dist/js-reactify.js -o dist/js-reactify.min.js --compress --mangle",
     "compress": "npm run minimize && \"node_modules/.bin/ngzip\" -9 dist/js-reactify.min.js > dist/js-reactify.min.js.gz",

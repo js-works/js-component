@@ -1,9 +1,6 @@
-import {
-    createElement as h,
-    defineClassComponent,
-    defineFunctionalComponent,
-    mount 
-} from 'js-glow';
+/** @jsx Reactify.createElement */
+import Reactify from 'js-reactify';
+import PropTypes from 'prop-types';
 
 import { Spec } from 'js-spec';
 
@@ -11,79 +8,91 @@ const translations = {
     en: {
         salutation: 'Hello, ladies and gentlemen'
     },
+
     de: {
         salutation: 'Hallo, meine Damen und Herren'
     },
+
     fr: {
         salutation: 'Salut, Mesdames, Messieurs'
     }
 };
 
-const App = defineClassComponent({
+const AppMeta = {
     displayName: 'App',
 
-    properties: {
-        defaultLocale: {
-            type: String,
-            constraint: Spec.oneOf('en', 'fr', 'de'),
-            defaultValue: 'en'
-        }
+    propTypes: {
+        defaultLocale: PropTypes.oneOf(['en', 'fr', 'de']) 
     },
 
-    provides: ['locale'],
+    defaultProps: {
+        defaultLocale: 'en'
+    },
 
+    childContextTypes: {
+        locale: PropTypes.string
+    }
+};
+
+class AppComponent extends Reactify.Component {
     constructor(props) {
-        this.setLocale(props.defaultLocale);
-    },
+        super(props);
+        this.state = { locale: props.defaultLocale }
+    }
 
-    provide() {
+    getChildContext() {
         return {
             locale: this.state.locale
         };
-    },
+    }
 
     setLocale(locale) {
-        this.state = { locale };
-    },
+        this.setState({ locale });
+    }
 
     render() {
         return (
-            h('div',
-                h('label[for=lang-selector]',
-                    'Select language: '),
-                h('select#lang-selector',
-                    {   value: this.props.locale,
-                        onChange: ev => this.setLocale(ev.target.value)
-                    },
-                    h('option[value=en]', 'en'),
-                    h('option[value=fr]', 'fr'),
-                    h('option[value=de]', 'de')),
-                h('div', Text({ name: 'salutation'})))
+            <div>
+                <label htmlFor="lang-selector">
+                    Select language
+                </label>
+                <select
+                    id="lang-selector"
+                    value={ this.props.locale }
+                    onChange={ ev => this.setLocale(ev.target.value) }
+                >
+                    <option value="en">en</option>
+                    <option value="fr">fr</option>
+                    <option value="de">de</option>
+                </select>
+                <section>
+                    <Text />
+                </section>
+            </div>
         );
     }
-});
+};
 
-const Text = defineFunctionalComponent({
+const App = Reactify.createFactory(
+    Object.assign(AppComponent, AppMeta));
+
+const TextMeta = {
     displayName: 'Text',
 
-    properties: {
-        name: {
-            type: String,
-        },
-
-        locale: {
-            type: String, 
-            inject: true,
-            defaultValue: 'en'
-        }
-    },
-
-    render(props) {
-        return (
-            h('div',
-                translations[props.locale].salutation)
-        );
+    contextTypes: {
+        locale: PropTypes.string
     }
-});
+};
 
-mount(App(), 'main-content');
+function TextComponent(props, context) { 
+    return (
+        <div>
+            { translations[context.locale].salutation }
+        </div>
+    );
+}
+
+const Text = Reactify.createFactory(
+    Object.assign(TextComponent, TextMeta));
+
+Reactify.render(<App/>, 'main-content');

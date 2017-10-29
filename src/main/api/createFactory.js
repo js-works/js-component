@@ -34,7 +34,7 @@ export default function createFactory(type) {
                 meta);
         } else {
             componentConfig = Object.assign(
-                { render: type },
+                { render: props => type(props, props) },
                 meta);
         }
 

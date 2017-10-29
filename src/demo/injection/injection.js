@@ -1,70 +1,76 @@
-import {
-    createElement as h,
-    defineClassComponent,
-    defineFunctionalComponent,
-    mount 
-} from 'js-glow';
+/** @jsx Reactify.createElement */
+import Reactify from 'js-reactify';
+import PropTypes from 'prop-types';
 
-const Parent = defineClassComponent({
+const ParentMeta = {
     displayName: 'Parent',
 
-    properties: {
-        masterValue: {
-            type: String,
-            defaultValue: 'default-value'
-        }
+    propTypes: {
+        masterValue: PropTypes.string
     },
 
-    provides: ['value'],
-    
-    provide() {
+    childContextTypes: {
+        value: PropTypes.string
+    }
+}
+
+class ParentComponent extends Reactify.Component {
+    getChildContext() {
         return {
             value: this.props.masterValue
         };
-    },
+    }
 
     render() {
-        return h('div',
-            h('div', 'Provided value: ', this.props.masterValue),
-            h('br'),
-            h('div',
-                ChildFunctionBased(),
-                ChildClassBased(),
-                ChildFunctionBased({ value: 'with explicit value' }),
-                ChildClassBased({ value: 'with another explicit value' })));
+        return (
+            <div>
+                <div>Provided value: { this.props.masterValue }</div>
+                <div>
+                    <ChildFunctionBased />
+                    <ChildClassBased />
+                </div>
+            </div>
+        );
     }
-});
+}
 
-const ChildFunctionBased = defineFunctionalComponent({
+const Parent = Reactify.createFactory(
+    Object.assign(ParentComponent, ParentMeta));
+
+const ChildFunctionBasedMeta = {
     displayName: 'ChildFunctionBased',
 
-    properties: {
-        value: {
-            type: String,
-            inject: true,
-            defaultValue: 'default value'
-        }
-    },
-
-    render(props) {
-        return h('div', 'ChildFunctionBased(', props.value, ')');
+    contextTypes: {
+        value: PropTypes.string
     }
-});
+};
 
-const ChildClassBased = defineClassComponent({
+function ChildFunctionBasedComponent(props, context) {
+    return (
+        <div>ChildFunctionBased({ context.value })</div>
+    );
+}
+
+const ChildFunctionBased = Reactify.createFactory(
+    Object.assign(ChildFunctionBasedComponent, ChildFunctionBasedMeta));
+
+const ChildClassBasedMeta = {
     displayName: 'ChildClassBased',
 
-    properties: {
-        value: {
-            type: String,
-            inject: true,
-            defaultValue: 'default value'
-        }
-    },
-
-    render() {
-        return h('div', 'ChildClassBased(', this.props.value, ')');
+    contextTypes: {
+        value: PropTypes.string
     }
-});
+};
 
-mount(Parent({ masterValue: 'the injected value' }), 'main-content');
+class ChildClassBasedComponent extends Reactify.Component {
+    render() {
+        return (
+            <div>ChildClassBased({ this.context.value })</div>
+        );
+    }
+}
+
+const ChildClassBased = Reactify.createFactory(
+    Object.assign(ChildClassBasedComponent, ChildClassBasedMeta));
+
+Reactify.render(<Parent masterValue="the injected value" />, 'main-content');

@@ -24,7 +24,7 @@ export default function buildInitFunction(componentClass, meta) {
 
                 updateView(
                     component.render(),
-                    meta.provides ? component.provide() : null,
+                    meta.provides ? component.getChildContext() : null,
                     component.___callbackWhenUpdated);
             },
 

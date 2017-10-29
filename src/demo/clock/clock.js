@@ -7,6 +7,8 @@ class ClockComponent extends Reactify.Component {
     interval = null;
 
     constructor() {
+        super();
+
         this.interval = null;
 
         this.state = {
@@ -14,12 +16,11 @@ class ClockComponent extends Reactify.Component {
         }; 
     }
 
-
     componentDidMount() {
         this.interval = setInterval(() => {
             this.setState({
-                time: new Date().toLocaleDateString()
-            }); 
+                time: new Date().toLocaleTimeString()
+            });
         }, 1000);
     }
 
@@ -40,6 +41,6 @@ class ClockComponent extends Reactify.Component {
     }
 }
 
-const Clock = Reactify.defineClassComponent(ClockComponent);
+const Clock = Reactify.createFactory(ClockComponent);
 
 Reactify.render(<Clock />, 'main-content');
