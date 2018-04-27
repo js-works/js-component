@@ -1,0 +1,42 @@
+{
+  "name": "js-reactify",
+  "version": "0.1.1",
+  "license": "LGPL-3.0",
+  "homepage": "https://github.com/js-works/js-reactify",
+  "main": "dist/js-reactify.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/js-works/js-reactify.git"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.3",
+    "@types/mocha": "^5.2.0",
+    "@types/node": "^8.0.0",
+    "browserify": "^14.4.0",
+    "chai": "^4.1.2",
+    "cross-conf-env": "^1.1.2",
+    "js-spec": "^0.1.20",
+    "mocha": "^5.1.1",
+    "ngzip": "^1.1.3",
+    "shx": "^0.2.2",
+    "ts-node": "^3.2.0",
+    "tslint": "^5.5.0",
+    "typedoc": "^0.11.1",
+    "typescript": "^2.8.3",
+    "uglify-js": "^3.3.22"
+  },
+  "scripts": {
+    "clean": "node_modules/.bin/shx rm -rf ./build ./dist",
+    "compile": "npm run clean && \"node_modules/.bin/tsc\"",
+    "bundle": "npm run compile && \"node_modules/.bin/shx\" mkdir -p dist && \"node_modules/.bin/browserify\" build/main/js-reactify.js -s jsReactiy -o dist/js-reactify.js",
+    "minimize": "npm run bundle && \"node_modules/.bin/uglifyjs\" dist/js-reactify.js -o dist/js-reactify.min.js --compress --mangle",
+    "compress": "npm run minimize && \"node_modules/.bin/ngzip\" -9 dist/js-reactify.min.js > dist/js-reactify.min.js.gz",
+    "test": "node_modules/.bin/mocha -r ts-node/register src/test/**/*.ts",
+    "test-watch": "node_modules/.bin/mocha -w -r ts-node/register src/test/**/*.ts",
+    "docs": "node_modules/.bin/shx rm -rf ./dist/docs && \"node_modules/.bin/cross-conf-env\" typedoc --options typedoc.json src/main/api/ -name \"js-reactify vnpm_package_version\"",
+    "all": "npm run compress && npm run test && npm run docs && \"node_modules/.bin/shx\" echo Finished successfully."
+  },
+  "dependencies": {
+    "react": "^16.3.2"
+  }
+}

@@ -1,0 +1,13 @@
+/*.log
+/.project
+/.idea
+/.c9
+/.codio
+/.settings
+/.grunt
+/package-lock.json
+/nbproject
+/node_modules
+/build/*
+/dist/*
+

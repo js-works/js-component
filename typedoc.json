@@ -1,0 +1,15 @@
+{
+  "mode": "file",
+  "out": "dist/docs/api",
+  "name": "js-reactify",
+  "theme": "minimal",
+  "ignoreCompilerErrors": "true",
+  "excludePrivate": "true",
+  "target": "ES5",
+  "moduleResolution": "node",
+  "preserveConstEnums": "true",
+  "stripInternal": "true",
+  "suppressExcessPropertyErrors": "true",
+  "suppressImplicitAnyIndexErrors": "true",
+  "module": "commonjs"
+}
