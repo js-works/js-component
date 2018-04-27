@@ -1,0 +1,24 @@
+{
+  "name": "js-remix",
+  "version": "0.1.0",
+  "description": "A decorator for React component classes and function to provide a handy alternative to define component meta data",
+  "main": "dist/remix.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/js-works/js-remix.git"
+  },
+  "keywords": ["React", "Decorator"],
+  "author": "",
+  "license": "LGPLv3",
+  "bugs": {
+    "url": "https://github.com/js-works/js-remix/issues"
+  },
+  "homepage": "https://github.com/js-works/js-remix",
+  "devDependencies": {
+    "react-dom": "^16.2.0",
+    "webpack": "^3.10.0"
+  }
+}
