@@ -15,9 +15,9 @@
     "browserify": "^14.4.0",
     "chai": "^4.1.2",
     "cross-conf-env": "^1.1.2",
-    "js-spec": "^0.1.20",
     "mocha": "^5.1.1",
     "ngzip": "^1.1.3",
+    "react": "^16.3.2",
     "shx": "^0.2.2",
     "ts-node": "^3.2.0",
     "tslint": "^5.5.0",
@@ -37,6 +37,10 @@
     "all": "npm run compress && npm run test && npm run docs && \"node_modules/.bin/shx\" echo Finished successfully."
   },
   "dependencies": {
-    "react": "^16.3.2"
+    "@types/react": "^16.3.13",
+    "@types/react-dom": "^16.0.5",
+    "js-spec": "^0.1.23",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2"
   }
 }
