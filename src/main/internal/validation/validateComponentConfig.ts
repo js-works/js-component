@@ -1,4 +1,4 @@
-import ComponentConfig from './types/ComponentConfig';
+import ComponentConfig from '../types/ComponentConfig';
 import { Spec, SpecValidator } from 'js-spec';
 
 // --- constants needed for the validation --------------------------
@@ -7,7 +7,7 @@ const
   REGEX_PROPERTY_NAME = /^[a-z][a-zA-Z0-9_-]*$/,
   REGEX_METHOD_NAME = /^[a-z][a-zA-Z0-9_-]*$/,
 
-  FORBIDDEN_OPERATION_NAMES = new Set(
+  FORBIDDEN_METHOD_NAMES = new Set(
     ['props', 'state', 'context', 'shouldComponentUpdate',
       'setState', 'componentWillReceiveProps',
       'componentWillMount', 'componentDidMount',
@@ -51,7 +51,7 @@ const componentConfigSpec =
           Spec.arrayOf(
             Spec.and(
               Spec.match(REGEX_METHOD_NAME),
-              Spec.notIn(FORBIDDEN_OPERATION_NAMES)))),
+              Spec.notIn(FORBIDDEN_METHOD_NAMES)))),
 
       isErrorBoundary:
         Spec.optional(Spec.boolean)
@@ -59,11 +59,11 @@ const componentConfigSpec =
 
 // --- the actual configuration validation function -----------------
 
-export default function validateComponentConfig(config: ComponentConfig<any>) {
+export default function validateComponentConfig(config: ComponentConfig<any>): Error {
   let ret = null;
 
   if (config === null || typeof config !== 'object') {
-    ret = 'Component configuration must be an object';
+    ret = new TypeError('Component configuration must be an object');
   } else {
     ret = componentConfigSpec.validate(config);
   }

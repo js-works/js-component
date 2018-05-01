@@ -6,10 +6,10 @@
   "ignoreCompilerErrors": "true",
   "excludePrivate": "true",
   "target": "ES5",
+  "module": "commonjs",  
   "moduleResolution": "node",
   "preserveConstEnums": "true",
   "stripInternal": "true",
-  "suppressExcessPropertyErrors": "true",
-  "suppressImplicitAnyIndexErrors": "true",
-  "module": "commonjs"
+  "suppressExcessPropertyErrors": "false",
+  "suppressImplicitAnyIndexErrors": "false"
 }

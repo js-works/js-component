@@ -1,13 +1,11 @@
-import componentMeta from './api/componentMeta';
+import defineComponent from './api/defineComponent';
 import isContext from './api/isContext';
 import isElement from './api/isElement';
 import isPortal from './api/isPortal';
-import ComponentConfig from './api/ComponentConfig';
 
 export {
-    componentMeta,
+    defineComponent,
     isContext,
     isElement,
-    isPortal,
-    ComponentConfig
-}
+    isPortal
+};

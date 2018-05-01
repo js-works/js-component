@@ -1,11 +1,11 @@
-import validateComponentConfig from '../internal/validateComponentConfig';
+import validateComponentConfig from '../internal/validation/validateComponentConfig';
 import ComponentConfig from '../internal/types/ComponentConfig';
 import ComponentProps from '../internal/types/ComponentProps';
 
-import React, { ComponentType, ReactNode } from 'react';
+import React, { ComponentType } from 'react';
 import { Spec, SpecValidator } from 'js-spec';
 
-function defineComponent<P extends ComponentProps = {}>(config: ComponentConfig<P>): ComponentType<P> {
+export default function defineComponent<P extends ComponentProps = {}>(config: ComponentConfig<P>): ComponentType<P> {
   const error = validateComponentConfig(config);
 
   if (error) {
@@ -50,7 +50,7 @@ function defineComponent<P extends ComponentProps = {}>(config: ComponentConfig<
       }
 
       if (type || constraint || !nullable || !hasDefaultValue) {
-        meta.propTypes[propName] = props => {
+        meta.propTypes[propName] = (props: P) => {
           let
             it = props[propName],
             errorMsg = null;

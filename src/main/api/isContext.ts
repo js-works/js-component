@@ -3,7 +3,7 @@ const
     providerSymbol = Symbol.for('react.provier'),
     specHintSymbol = Symbol.for('js-spec:hint');
 
-export default function isContext(it) {
+export default function isContext(it: any): boolean {
     return it !== null
         && typeof it === 'object'
         && it.$$typeof === contextSymbol
@@ -14,4 +14,4 @@ export default function isContext(it) {
         && it.Consumer === it;
 }
 
-isContext[specHintSymbol] = 'Must be a React context';
+(<any>isContext)[specHintSymbol] = 'Must be a React context';
