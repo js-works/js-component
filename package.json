@@ -4,6 +4,7 @@
   "license": "LGPL-3.0",
   "homepage": "https://github.com/js-works/js-reactify",
   "main": "dist/js-reactify.min.js",
+  "types": "dist/types",
   "repository": {
     "type": "git",
     "url": "https://github.com/js-works/js-reactify.git"
@@ -17,6 +18,8 @@
     "chai": "^4.1.2",
     "compression-webpack-plugin": "^1.1.11",
     "cross-conf-env": "^1.1.2",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^3.2.0",
     "mocha": "^5.1.1",
     "react": "^16.3.2",
     "shx": "^0.2.2",
@@ -36,8 +39,8 @@
     "test": "node_modules/.bin/mocha -r ts-node/register src/test/**/*.ts",
     "test-watch": "node_modules/.bin/mocha -w -r ts-node/register src/test/**/*.ts",
     "docs": "node_modules/.bin/shx rm -rf ./dist/docs && \"node_modules/.bin/cross-conf-env\" typedoc --options typedoc.json src/main/api/ -name \"js-rectify vnpm_package_version\"",
-    "start-demo": "webpack-dev-server --config ./webpack.config.demo.js --watch --open",
-    "all": "npm run clean && npm run test && npm run build-dev && npm run build-prod && npm run docs"
+    "demo": "webpack-dev-server --config ./webpack.config.demo.js --watch --open",
+    "dist": "npm run clean && npm run test && npm run build-dev && npm run build-prod && npm run docs"
   },
   "dependencies": {
     "js-spec": "^0.1.23",

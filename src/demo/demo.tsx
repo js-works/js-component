@@ -1,6 +1,17 @@
+
+alert(1)
+alert(document.body.innerHTML)
+//import { isPortal } from 'js-reactify';
+import { isPortal } from '../main/js-reactify';
+alert(isPortal)
 import React from 'react';
+alert(React)
+
+//import React from 'react';
 import ReactDOM from 'react-dom';
-import { defineComponent } from '../main/js-reactify';
+console.clear();
+console.log(new Date);
+//import { defineComponent } from '../main/js-reactify';
 
 type CounterProps = {
   label?: string | null
@@ -9,8 +20,8 @@ type CounterProps = {
 type CounterState = {
   counter: number
 }
-
-const Counter = defineComponent({
+/*
+const Counter = defineComponent<any>({
   displayName: 'Counter',
 
   properties: {
@@ -54,6 +65,7 @@ const Counter = defineComponent({
     }
   }
 });
-alert(1)
+*/
+const Counter = () => <div>Juhuuuuu</div>;
+
 ReactDOM.render(<Counter/>, document.getElementById('main-content'));
-alert(2)

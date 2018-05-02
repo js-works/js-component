@@ -6,13 +6,14 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "declaration": true,
         "lib": ["es7", "dom"],
         "rootDir": "src",
         "outDir": "build",
-        //"typeRoots": [
-        //    "node_modules/@types"
-        //],
+        //"declaration": true, 
+        //"declarationDir": "build/types",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
         "types": [
             "node", "mocha", "chai"
         ],
@@ -22,6 +23,7 @@
         "jsx": "react"
     },
     "files": [
-        "src/main/js-reactify.ts"
+        "src/main/js-reactify.ts",
+        "src/demo/demo.tsx"
     ]
 }
