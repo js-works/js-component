@@ -3,14 +3,34 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Spec } from 'js-spec';
 
+interface Logger extends Object {
+  log(...args: any[]): void;
+}
+
+const
+  nopLogger: Logger = {
+    log() {
+    }
+  },
+
+  consoleLogger: Logger = {
+    log(...args: any[]) {
+      console.log(...args);
+    }
+  };
+
+const LoggerCtx = React.createContext<Logger>(nopLogger);
+
 type CounterProps = {
   label?: string | null,
-  initialValue?: number
+  initialValue?: number,
+  logger?: Logger
 }
 
 type CounterState = {
   counter: number
 }
+
 
 const Counter = defineComponent({
   displayName: 'Counter',
@@ -26,6 +46,11 @@ const Counter = defineComponent({
       type: Number,
       constraint: Spec.integer,
       defaultValue: 0
+    },
+
+    logger: {
+      type: Object,
+      defaultValue: nopLogger
     }
   },
 
@@ -33,16 +58,20 @@ const Counter = defineComponent({
     constructor(props: CounterProps) {
       super(props);
 
+      props.logger.log('Instanciating new component');
+
       this.state = { counter: props.initialValue };
-      this.onClickDecrement = this.onClickIncrement.bind(this);
-      this.onClickIncrement = this.onClickDecrement.bind(this);
+      this.onClickDecrement = this.onClickDecrement.bind(this);
+      this.onClickIncrement = this.onClickIncrement.bind(this);
     }
 
     onClickIncrement() {
+      this.props.logger.log('Incrementing...');
       this.setState({ counter: this.state.counter + 1 });
     }
 
     onClickDecrement() {
+      this.props.logger.log('Decrementing...');
       this.setState({ counter: this.state.counter - 1 });
     }
 
@@ -64,4 +93,8 @@ const Counter = defineComponent({
   }
 });
 
-ReactDOM.render(<Counter label="Counter:"/>, document.getElementById('main-content'));
+ReactDOM.render(
+  <LoggerCtx.Provider value={consoleLogger}>
+    <Counter label="Counter:" logger={consoleLogger}/>
+  </LoggerCtx.Provider>,
+  document.getElementById('main-content'));

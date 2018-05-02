@@ -14,7 +14,8 @@ type ComponentConfig<P extends ComponentProps> = {
         ? NumberConstructor
         : P[K] extends string
         ? StringConstructor
-        : { new(): P[K] };
+        : { new(): P[K] }
+        | ObjectConstructor
 
       constraint?: Validator,
       nullable?: boolean,
