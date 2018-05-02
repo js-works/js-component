@@ -11,9 +11,10 @@ module.exports = {
       {
         test: /\.ts$/,
         use: [{
-          loader: 'awsome-typescript-loader',
+          loader: 'ts-loader',
           options: {
             compilerOptions: {
+              module: 'umd',
               declarationDir: 'types'
             }
           }

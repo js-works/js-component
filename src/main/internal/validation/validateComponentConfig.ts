@@ -1,5 +1,5 @@
 import ComponentConfig from '../types/ComponentConfig';
-//import { Spec, SpecValidator } from 'js-spec';
+import { Spec, SpecValidator } from 'js-spec';
 
 // --- constants needed for the validation --------------------------
 const
@@ -15,7 +15,7 @@ const
       'componentDidCatch', 'constructor', 'forceUpdate']);
 
 // --- the spec of the component configuration ----------------------
-/*
+
 const componentConfigSpec =
   Spec.and(
     Spec.shape({
@@ -54,9 +54,12 @@ const componentConfigSpec =
               Spec.notIn(FORBIDDEN_METHOD_NAMES)))),
 
       isErrorBoundary:
-        Spec.optional(Spec.boolean)
+        Spec.optional(Spec.boolean),
+
+      main:
+        Spec.function
     }));
-*/
+
 // --- the actual configuration validation function -----------------
 
 export default function validateComponentConfig(config: ComponentConfig<any>): Error {
@@ -65,7 +68,7 @@ export default function validateComponentConfig(config: ComponentConfig<any>): E
   if (config === null || typeof config !== 'object') {
     ret = new TypeError('Component configuration must be an object');
   } else {
-   // ret = componentConfigSpec.validate(config);
+    ret = componentConfigSpec.validate(config);
   }
 
   return ret;

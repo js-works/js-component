@@ -3,7 +3,7 @@ import ComponentConfig from '../internal/types/ComponentConfig';
 import ComponentProps from '../internal/types/ComponentProps';
 
 import React, { ComponentType } from 'react';
-//import { Spec, SpecValidator } from 'js-spec';
+import { Spec, SpecValidator } from 'js-spec';
 
 export default function defineComponent<P extends ComponentProps = {}>(config: ComponentConfig<P>): ComponentType<P> {
   const error = validateComponentConfig(config);
@@ -69,7 +69,7 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
 
           if (!errorMsg && isPrimitiveType && isSomething
             && it.constructor !== type) {
-              errorMsg = 'Must be of type ' + type.name;
+              errorMsg = 'Must be a ' + type.name.toLowerCase();
           }
           
           if (!errorMsg && type && !isPrimitiveType && isSomething
@@ -83,7 +83,7 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
           }
 
           if (!errorMsg && constraint && !isDefaultValue) {
-            const result: any = null; // SpecValidator.from(constraint).validate(it);
+            const result: any = SpecValidator.from(constraint).validate(it);
 
             if (result) {
               errorMsg = result.message;

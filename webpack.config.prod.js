@@ -14,6 +14,7 @@ module.exports = {
           loader: 'ts-loader',
           options: {
             compilerOptions: {
+              module: 'umd',
               declarationDir: 'types'
             }
           }

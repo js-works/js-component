@@ -44,7 +44,7 @@
     "dist": "npm run clean && npm run test && npm run build-dev && npm run build-prod && npm run docs"
   },
   "dependencies": {
-    "js-spec": "^0.1.23",
+    "js-spec": "^0.1.27",
     "react": "^16.3.2",
     "react-dom": "^16.3.2"
   }

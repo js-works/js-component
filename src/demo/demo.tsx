@@ -1,16 +1,18 @@
 import { defineComponent } from '../main/js-reactify';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Spec } from 'js-spec';
 
 type CounterProps = {
-  label?: string | null
+  label?: string | null,
+  initialValue?: number
 }
 
 type CounterState = {
   counter: number
 }
 
-const Counter = defineComponent<any>({
+const Counter = defineComponent({
   displayName: 'Counter',
 
   properties: {
@@ -18,6 +20,12 @@ const Counter = defineComponent<any>({
       type: String,
       nullable: true,
       defaultValue: null
+    },
+
+    initialValue: {
+      type: Number,
+      constraint: Spec.integer,
+      defaultValue: 0
     }
   },
 
@@ -25,7 +33,7 @@ const Counter = defineComponent<any>({
     constructor(props: CounterProps) {
       super(props);
 
-      this.state = { counter: 0 };
+      this.state = { counter: props.initialValue };
       this.onClickDecrement = this.onClickIncrement.bind(this);
       this.onClickIncrement = this.onClickDecrement.bind(this);
     }
