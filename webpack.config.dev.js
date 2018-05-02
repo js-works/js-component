@@ -11,7 +11,7 @@ module.exports = {
       {
         test: /\.ts$/,
         use: [{
-          loader: 'ts-loader',
+          loader: 'awsome-typescript-loader',
           options: {
             compilerOptions: {
               declarationDir: 'types'
@@ -24,7 +24,7 @@ module.exports = {
   },
   resolve: {
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
-    extensions: [ '.js', '.ts', '.tsx' ]
+    extensions: ['.js', '.ts', '.tsx']
   },
 
   output: {

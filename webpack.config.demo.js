@@ -6,7 +6,7 @@ module.exports = {
   mode: 'development',
   target: 'web',
   context: path.resolve(__dirname),
-  entry: { demo: './src/demo/demo.tsx' },
+  entry: {demo: './src/demo/demo.tsx'},
   devtool: 'inline-source-map',
   devServer: {
     openPage: 'demo/demo.html',
@@ -38,9 +38,12 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         use: [{
-          loader: 'ts-loader',
+          loader: 'awesome-typescript-loader',
           options: {
             compilerOptions: {
+              module: 'umd',
+              declaration: false,
+              declarationDir: null 
             }
           }
         }],
@@ -53,7 +56,7 @@ module.exports = {
     //modules: ['.', 'src', path.resolve(__dirname, 'node_modules'), __dirname],
     extensions: ['.js', '.ts', '.tsx'],
     //modules: [path.resolve(__dirname, 'node_modules')],
-    modules: ['node_modules'],
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     alias: {
       'js-reactify$': path.resolve(__dirname, 'src/main/js-reactify')
     }
@@ -64,6 +67,7 @@ module.exports = {
   },
   output: {
     filename: 'demo/demo-bundle.js',
+    libraryTarget: 'umd'
   },
   plugins: [
     new HtmlWebpackPlugin({

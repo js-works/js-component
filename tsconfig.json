@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "ES5",
-        "module": "umd",
+        //"module": "umd",
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
@@ -9,15 +9,14 @@
         "lib": ["es7", "dom"],
         "rootDir": "src",
         "outDir": "build",
-        //"declaration": true, 
-        //"declarationDir": "build/types",
+        "declaration": true, 
+        "declarationDir": "build/types",
         "typeRoots": [
             "node_modules/@types"
         ],
         "types": [
             "node", "mocha", "chai"
         ],
-        //"allowSyntheticDefaultImports": true,
         "moduleResolution": "node",
         "esModuleInterop": true,
         "jsx": "react"
