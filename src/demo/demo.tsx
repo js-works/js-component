@@ -21,10 +21,12 @@ const
 
 const LoggerCtx = React.createContext<Logger>(nopLogger);
 
+const DateCtx = React.createContext<Date>(null);
+
 type CounterProps = {
   label?: string | null,
   initialValue?: number,
-  logger?: Logger
+  logger?: Logger 
 }
 
 type CounterState = {
@@ -50,7 +52,12 @@ const Counter = defineComponent({
 
     logger: {
       type: Object,
-      defaultValue: nopLogger
+      defaultValue: nopLogger, 
+
+      inject: {
+        context: LoggerCtx,
+        select: (arg: Date) => arg
+      }
     }
   },
 

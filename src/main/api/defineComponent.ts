@@ -9,8 +9,13 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
   const error = validateComponentConfig(config);
 
   if (error) {
-    throw new TypeError('[defineComponent] Illegal component configuration: '
-      + error.message)
+    if (config && typeof config.displayName === 'string') {
+      throw new TypeError(`[defineComponent] Illegal component configuration for '${config.displayName}': `
+        + error.message);
+    } else {
+      throw new TypeError('[defineComponent] Illegal component configuration: '
+        + error.message);
+    }
   }
 
   let ret: ComponentType<P>;

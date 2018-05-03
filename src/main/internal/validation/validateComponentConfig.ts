@@ -1,4 +1,5 @@
 import ComponentConfig from '../types/ComponentConfig';
+import isContext from '../../api/isContext';
 import { Spec, SpecValidator } from 'js-spec';
 
 // --- constants needed for the validation --------------------------
@@ -31,20 +32,46 @@ const componentConfigSpec =
               Spec.match(REGEX_PROPERTY_NAME)),
 
             Spec.valuesOf(
-              Spec.and(
-                Spec.shape({
-                  type:
-                    Spec.optional(Spec.function),
-                  
-                  constraint:
-                    Spec.optional(Spec.validator),
+              Spec.shape({
+                type:
+                  Spec.optional(Spec.function),
+                
+                constraint:
+                  Spec.optional(Spec.validator),
 
-                  nullable:
-                    Spec.optional(Spec.boolean),
+                nullable:
+                  Spec.optional(Spec.boolean),
 
-                  defaultValue:
-                    Spec.optional(Spec.any),
-                }))))),
+                defaultValue:
+                  Spec.optional(Spec.any),
+
+                inject:
+                  Spec.optional(
+                    Spec.or(
+                      {
+                        when: it => it && Array.isArray(it.context),
+
+                        check:
+                          Spec.shape({
+                            context:
+                              Spec.arrayOf(isContext),
+                            select:
+                              Spec.function
+                          })
+                      },
+                      {
+                        when: it => it && isContext(it.context),
+
+                        check:
+                          Spec.shape({
+                            context:
+                              isContext,
+                            select:
+                              Spec.optional(
+                                Spec.function)
+                          })
+                      }))
+                })))),
 
       methods:
         Spec.optional(

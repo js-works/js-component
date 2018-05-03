@@ -1,6 +1,6 @@
 const
     contextSymbol = Symbol.for('react.context'),
-    providerSymbol = Symbol.for('react.provier'),
+    providerSymbol = Symbol.for('react.provider'),
     specHintSymbol = Symbol.for('js-spec:hint');
 
 export default function isContext(it: any): boolean {
@@ -10,7 +10,6 @@ export default function isContext(it: any): boolean {
         && it.Provider !== null
         && typeof it.Provider === 'object'
         && it.Provider.$$typeof === providerSymbol
-        && it.Provider.context === it
         && it.Consumer === it;
 }
 
