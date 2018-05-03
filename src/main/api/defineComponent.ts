@@ -28,7 +28,10 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
     meta.propTypes = {};
     meta.defaultProps = {};
 
-    const propNames = Object.keys(config.properties);
+    const
+      propNames = Object.keys(config.properties),
+      injectedContexts: React.Context<any>[] = [],
+      contextInfoPairs: [string, number][] = [];
 
     for (let i = 0; i < propNames.length; ++i) {
       const
@@ -39,7 +42,8 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
         nullable = !!propConfig.nullable,
         constraint = propConfig.constraint || null,
         hasDefaultValue = propConfig.hasOwnProperty('defaultValue'),
-        defaultValue = propConfig.defaultValue;
+        defaultValue = propConfig.defaultValue,
+        inject = propConfig.inject || null;
 
       if (hasDefaultValue) {
         const descr = Object.getOwnPropertyDescriptor(propConfig, 'defaultValue');
@@ -52,6 +56,17 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
             get: descr.get
           });
         }
+      }
+
+      if (inject) {
+        let index = injectedContexts.indexOf(inject);
+
+        if (index === -1) {
+          index = injectedContexts.length;
+          injectedContexts.push(inject);
+        }
+
+        contextInfoPairs.push([propName, index]);
       }
 
       if (type || constraint || !nullable || !hasDefaultValue) {
@@ -112,6 +127,46 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
     }
 
     Object.assign(ret, meta);
+    
+    if (injectedContexts.length > 0) {
+      const innerComponent = ret;
+
+      ret = React.forwardRef((props, ref) => {
+        const
+          contextValues = new Array(injectedContexts.length),
+          adjustedProps = { ref, ...<any>props };
+
+        let node: React.ReactElement<any> = null;
+
+        for (let i = 0; i < injectedContexts.length; ++i) {
+          if (i === 0) {
+            node = React.createElement(injectedContexts[0].Consumer,null, (value: any) =>{
+              contextValues[0] = value;
+
+              for (let j = 0; j < contextInfoPairs.length; ++j) {
+                let [propName, contextIndex] = contextInfoPairs[i];
+
+                if (props[propName] === undefined) {
+                  adjustedProps[propName] = contextValues[i];
+                }
+              }
+
+              return React.createElement(innerComponent, adjustedProps);
+            });
+          } else {
+            const currNode = node;
+            
+            node = React.createElement(injectedContexts[i].Consumer, null, (value: any) => {
+              contextValues[i] = value;
+
+              return currNode;
+            });
+          }
+        }
+
+        return node;
+      });
+    }
 
     return ret;
   }

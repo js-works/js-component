@@ -17,11 +17,9 @@ const
     log(...args: any[]) {
       console.log(...args);
     }
-  };
-
-const LoggerCtx = React.createContext<Logger>(nopLogger);
-
-const DateCtx = React.createContext<Date>(null);
+  },
+  
+  LoggerCtx = React.createContext<Logger>(nopLogger);
 
 type CounterProps = {
   label?: string | null,
@@ -32,7 +30,6 @@ type CounterProps = {
 type CounterState = {
   counter: number
 }
-
 
 const Counter = defineComponent({
   displayName: 'Counter',
@@ -53,11 +50,7 @@ const Counter = defineComponent({
     logger: {
       type: Object,
       defaultValue: nopLogger, 
-
-      inject: {
-        context: LoggerCtx,
-        select: (arg: Date) => arg
-      }
+      inject: LoggerCtx
     }
   },
 
@@ -102,6 +95,6 @@ const Counter = defineComponent({
 
 ReactDOM.render(
   <LoggerCtx.Provider value={consoleLogger}>
-    <Counter label="Counter:" logger={consoleLogger}/>
+    <Counter label="Counter:" />
   </LoggerCtx.Provider>,
   document.getElementById('main-content'));

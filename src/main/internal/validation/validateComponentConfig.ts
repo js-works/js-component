@@ -46,32 +46,8 @@ const componentConfigSpec =
                   Spec.optional(Spec.any),
 
                 inject:
-                  Spec.optional(
-                    Spec.or(
-                      {
-                        when: it => it && Array.isArray(it.context),
-
-                        check:
-                          Spec.shape({
-                            context:
-                              Spec.arrayOf(isContext),
-                            select:
-                              Spec.function
-                          })
-                      },
-                      {
-                        when: it => it && isContext(it.context),
-
-                        check:
-                          Spec.shape({
-                            context:
-                              isContext,
-                            select:
-                              Spec.optional(
-                                Spec.function)
-                          })
-                      }))
-                })))),
+                  Spec.optional(isContext)
+              })))),
 
       methods:
         Spec.optional(

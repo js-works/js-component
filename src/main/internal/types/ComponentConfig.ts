@@ -20,31 +20,7 @@ type ComponentConfig<P extends ComponentProps> = {
       constraint?: Validator,
       nullable?: boolean,
       defaultValue?: P[K],
-
-      inject?:
-        {
-          context: React.Context<P[K]>,
-        }
-        |
-        {
-          context: React.Context<any>,
-          select: (value: any) => P[K]
-        }
-        |
-        {
-          context: [React.Context<any>, React.Context<any>],
-          select: (value1: any, value2: any) => P[K]
-        }
-        |
-        {
-          context: [React.Context<any>, React.Context<any>, React.Context<any>],
-          select: (value1: any, value2: any, value3: any) => P[K]
-        }
-        |
-        {
-          context: [React.Context<any>, React.Context<any>, React.Context<any>, React.Context<any>],
-          select: (value1: any, value2: any, value3: any, value4: any) => P[K]
-        }
+      inject?: React.Context<P[K]>
     }
   },
   
