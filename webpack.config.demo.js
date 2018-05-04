@@ -16,11 +16,9 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         use: [{
-          loader: 'awesome-typescript-loader',
+          loader: 'typescript-loader',
           options: {
             compilerOptions: {
-              declaration: false,
-              declarationDir: null 
             }
           }
         }],

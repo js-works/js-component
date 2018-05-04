@@ -12,4 +12,4 @@ export default function isNode(it: any): boolean {
     || React.isValidElement(it);
 }
 
-(<any>isNode)[specHintSymbol] = 'Must be a React element';
+(<any>isNode)[specHintSymbol] = 'Must be a React node';
