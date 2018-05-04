@@ -24,7 +24,6 @@ type ComponentConfig<P extends ComponentProps> = {
     }
   },
   
-  methods?: Array<keyof P>,
   isErrorBoundary?: boolean,
   main: { (props?: P): any } | { new(props: P): React.Component<P> }
   // main: ComponentType<P>

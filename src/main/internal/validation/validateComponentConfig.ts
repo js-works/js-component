@@ -5,15 +5,7 @@ import { Spec, SpecValidator } from 'js-spec';
 // --- constants needed for the validation --------------------------
 const
   REGEX_DISPLAY_NAME = /^[A-Z][a-zA-Z0-9_.]*$/,
-  REGEX_PROPERTY_NAME = /^[a-z][a-zA-Z0-9_-]*$/,
-  REGEX_METHOD_NAME = /^[a-z][a-zA-Z0-9_-]*$/,
-
-  FORBIDDEN_METHOD_NAMES = new Set(
-    ['props', 'state', 'context', 'shouldComponentUpdate',
-      'setState', 'componentWillReceiveProps',
-      'componentWillMount', 'componentDidMount',
-      'componentWillUpdate', 'componentDidUpdate',
-      'componentDidCatch', 'constructor', 'forceUpdate']);
+  REGEX_PROPERTY_NAME = /^[a-z][a-zA-Z0-9_-]*$/;
 
 // --- the spec of the component configuration ----------------------
 
@@ -48,13 +40,6 @@ const componentConfigSpec =
                 inject:
                   Spec.optional(isContext)
               })))),
-
-      methods:
-        Spec.optional(
-          Spec.arrayOf(
-            Spec.and(
-              Spec.match(REGEX_METHOD_NAME),
-              Spec.notIn(FORBIDDEN_METHOD_NAMES)))),
 
       isErrorBoundary:
         Spec.optional(Spec.boolean),
