@@ -37,6 +37,7 @@ module.exports = env => {
       extensions: ['.js', '.ts'],
       modules: ['node_modules'],
     },
+    externals: ['js-spec', 'react'],
     output: {
       filename: (typeName === 'umd' ? '' : `${typeName}/`) + `js-remix.${modeName}.js`,
       path: path.resolve(__dirname, 'dist'),
