@@ -1,13 +1,13 @@
 {
-  "name": "js-reactify",
+  "name": "js-remix",
   "version": "0.1.1",
   "license": "LGPL-3.0",
-  "homepage": "https://github.com/js-works/js-reactify",
-  "main": "dist/js-reactify.min.js",
+  "homepage": "https://github.com/js-works/js-remix",
+  "main": "dist/js-remix.min.js",
   "types": "dist/types",
   "repository": {
     "type": "git",
-    "url": "https://github.com/js-works/js-reactify.git"
+    "url": "https://github.com/js-works/js-remix.git"
   },
   "devDependencies": {
     "@types/chai": "^4.1.3",

@@ -21,6 +21,6 @@
         "jsx": "react"
     },
     "files": [
-        "src/main/js-reactify.ts"
+        "src/main/js-remix.ts"
     ]
 }

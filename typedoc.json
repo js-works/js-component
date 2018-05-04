@@ -1,7 +1,7 @@
 {
   "mode": "file",
   "out": "dist/docs/api",
-  "name": "js-reactify",
+  "name": "js-remix",
   "theme": "minimal",
   "ignoreCompilerErrors": "true",
   "excludePrivate": "true",

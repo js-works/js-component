@@ -1,4 +1,4 @@
-import { defineComponent } from '../main/js-reactify';
+import { defineComponent } from '../main/js-remix';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Spec } from 'js-spec';

@@ -15,13 +15,7 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: [{
-          loader: 'typescript-loader',
-          options: {
-            compilerOptions: {
-            }
-          }
-        }],
+        loader: 'ts-loader',
         exclude: /node_modules/
       }
     ]
