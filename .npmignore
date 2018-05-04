@@ -5,7 +5,6 @@
 /.codio
 /.settings
 /.grunt
-/package-lock.json
 /nbproject
 /node_modules
 /build/*
