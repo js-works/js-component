@@ -41,6 +41,9 @@ const componentConfigSpec =
                   Spec.optional(isContext)
               })))),
 
+      validate:
+        Spec.optional(Spec.function),
+
       isErrorBoundary:
         Spec.optional(Spec.boolean),
 

@@ -93,8 +93,17 @@ const Counter = defineComponent({
   }
 });
 
-ReactDOM.render(
-  <LoggerCtx.Provider value={consoleLogger}>
-    <Counter label="Counter:" />
-  </LoggerCtx.Provider>,
+const Demo = defineComponent({
+  displayName: 'Demo',
+
+  main: () => {
+    return (
+      <LoggerCtx.Provider value={consoleLogger}>
+        <Counter label="Counter:" />
+      </LoggerCtx.Provider>
+    );
+  }
+});
+
+ReactDOM.render(<Demo />,
   document.getElementById('main-content'));

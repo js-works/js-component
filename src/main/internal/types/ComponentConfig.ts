@@ -23,10 +23,10 @@ type ComponentConfig<P extends ComponentProps> = {
       inject?: React.Context<P[K]>
     }
   },
-  
+ 
+  validate?: (props: P) => boolean | Error,
   isErrorBoundary?: boolean,
-  main: { (props?: P): any } | { new(props: P): React.Component<P> }
-  // main: ComponentType<P>
+  main: { (props?: P): React.ReactNode } | { new(props: P): React.Component<P> }
 }
 
 export default ComponentConfig;
