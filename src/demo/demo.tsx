@@ -58,7 +58,7 @@ const Counter = defineComponent({
     constructor(props: CounterProps) {
       super(props);
 
-      props.logger.log('Instanciating new component');
+      props.logger.log('Instantiating new component');
 
       this.state = { counter: props.initialValue };
       this.onClickDecrement = this.onClickDecrement.bind(this);

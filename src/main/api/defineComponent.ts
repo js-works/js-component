@@ -125,13 +125,23 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
   }
 
   if (config.main.prototype instanceof React.Component) {
-    const parentClass: any = config.main;
+    const parentClass: { new(props: P): React.Component<P> } = <any>config.main;
 
-    ret = <any>class CustomComponent extends parentClass {
+    ret = class CustomComponent extends parentClass {
+      constructor(props: P) {
+        if (performValidations) {
+          checkProps(props, config);
+        }
+
+        super(props);
+      }
+
       static getDerivedStateFromProps(newProps: P, prevProps: P) {
-        checkProps(newProps, config);
+        if (performValidations) {
+          checkProps(newProps, config);
+        }
 
-        const f = parentClass.getDerivedStateFromProps;
+        const f = (<any>parentClass).getDerivedStateFromProps;
 
         return f ? f(newProps, prevProps) : null;
       }
@@ -191,7 +201,9 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
 }
 
 function checkProps<P extends ComponentProps>(props: P, config: ComponentConfig<P>): void {
-  if (performValidations) {
+  if (performValidations && props !== lastCheckedProps) {
+    lastCheckedProps = props;
+
     const keys = !props ? null : Object.keys(props);
 
     if (keys && keys.length > 0) {
@@ -241,3 +253,7 @@ function checkProps<P extends ComponentProps>(props: P, config: ComponentConfig<
     }
   }
 }
+
+// --- locals -------------------------------------------------------
+
+let lastCheckedProps: any = undefined;
