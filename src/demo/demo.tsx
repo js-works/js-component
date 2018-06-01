@@ -1,4 +1,4 @@
-import { defineComponent } from '../main/js-remix';
+import { defineComponent, defineContext } from '../main/js-remix';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Spec } from 'js-spec';
@@ -21,7 +21,10 @@ const
     }
   },
   
-  LoggerCtx = React.createContext<Logger>(nopLogger);
+  LoggerCtx = defineContext<Logger>({
+    displayName: 'LoggerCtx',
+    defaultValue: nopLogger
+  });
 
 type CounterProps = {
   label?: string | null,
@@ -100,7 +103,7 @@ const Demo = defineComponent({
 
   main: () => {
     return (
-      h(LoggerCtx.Provider, { value: consoleLogger },
+      h(LoggerCtx.Provider as any, { value: consoleLogger },
         h(Counter, { label: 'Counter:' }))
     );
   }

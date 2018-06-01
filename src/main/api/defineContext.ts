@@ -1,34 +1,35 @@
 import validateContextConfig from '../internal/validation/validateContextConfig';
-import React from 'react';
 import validateProperty from '../internal/validation/validateProperty';
+import ContextConfig from '../internal/types/ContextConfig';
+import React from 'react';
 
-
-export default function defineContext(config) {
+export default function defineContext<T>(config: ContextConfig<T>) {
   const error = validateContextConfig(config);
 
   if (error) {
     const errorMsg = prettifyErrorMsg(error.message, config);
 
-    printError(errorMsg);
+    console.error(errorMsg);
     throw new TypeError(errorMsg);
   }
 
-  const
-    internalContext = React.createContext(config.defaultValue),
-    internalProvider = internalContext.Provider,
-    internalConsumer = internalContext.Consumer,
+  const ret = React.createContext(config.defaultValue);
 
-    Provider = function (...args) {
-      return createElement(Provider, ...args);
-    },
+  (ret.Provider as any).propTypes = {
+    '*': (props: any) => {
+      let result = validateProperty(props.value, 'value', config);
 
-    Consumer = (...args) => {
-      return createElement(Consumer, ...args);
-    };
-    
-  internalContext.Provider.propTypes = {
-    value: props => {
-      const result = validateProperty(props.value, 'value', config);
+      if (result === null) {
+        const illegalKeys =
+          Object.keys(props)
+            .filter(it => it !== 'value' && it !== 'key' && it !== 'children');
+
+        if (illegalKeys.length === 1) {
+          result = new Error('Illegal key: ' + illegalKeys[0]);
+        } else if (illegalKeys.length > 1) {
+          result = new Error('Illegal keys: ' + illegalKeys.join(', '));
+        }
+      }
 
       return !result
         ? null
@@ -37,32 +38,10 @@ export default function defineContext(config) {
     }
   };
 
-  Object.defineProperty(Provider, '__internal_type', {
-    enumerable: false,
-    value: internalProvider
-  });
-
-  Object.defineProperty(Consumer, '__internal_type', {
-    enumerable: false,
-    value: internalConsumer
-  });
-
-  Object.defineProperty(Consumer, '__internal_isConsumer', {
-    enumerable: false,
-    value: true
-  });
-
-  const ret = { Provider, Consumer };
-
-  Object.defineProperty(ret, '__internal_context', {
-    enumerable: false,
-    value: internalContext,
-  });
-
-  return Object.freeze(ret);
+  return ret; 
 }
 
-function prettifyErrorMsg(errorMsg, config) {
+function prettifyErrorMsg(errorMsg: string, config: ContextConfig<any>) {
   return config && typeof config === 'object'
     && typeof config.displayName === 'string'
     && config.displayName.trim().length > 0
