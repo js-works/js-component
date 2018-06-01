@@ -46,6 +46,6 @@ function prettifyErrorMsg(errorMsg: string, config: ContextConfig<any>) {
     && typeof config.displayName === 'string'
     && config.displayName.trim().length > 0
     ? '[defineContext] Invalid configuration for context '
-      + `"${config.displayName}": ${errorMsg} `
-    : `[defineContext] Invalid context configuration: ${errorMsg}`;
+      + `"${config.displayName}" => ${errorMsg} `
+    : `[defineContext] Invalid context configuration => ${errorMsg}`;
 }

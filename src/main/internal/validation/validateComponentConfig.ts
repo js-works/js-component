@@ -1,8 +1,9 @@
 import ComponentConfig from '../types/ComponentConfig';
-import isContext from '../helper/isContext';
+import isContext from '../util/isContext';
 import { Spec, SpecValidator } from 'js-spec';
 
 // --- constants needed for the validation --------------------------
+
 const
   REGEX_DISPLAY_NAME = /^[A-Z][a-zA-Z0-9_.]*$/,
   REGEX_PROPERTY_NAME = /^[a-z][a-zA-Z0-9_-]*$/;
