@@ -20,6 +20,6 @@
         "jsx": "react"
     },
     "files": [
-        "src/main/js-component.ts"
+        "src/main/js-widgets.ts"
     ]
 }

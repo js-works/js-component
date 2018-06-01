@@ -1,4 +1,4 @@
-import { defineComponent, defineContext } from '../main/js-component';
+import { defineComponent, defineContext } from '../main/js-widgets';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Spec } from 'js-spec';

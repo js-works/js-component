@@ -1,12 +1,12 @@
 {
-  "name": "js-component",
-  "version": "0.0.1",
+  "name": "js-widgets",
+  "version": "0.0.4",
   "license": "LGPL-3.0",
-  "homepage": "https://github.com/js-works/js-component",
-  "types": "dist/types/main/js-component.d.ts",
+  "homepage": "https://github.com/js-works/js-widgets",
+  "types": "dist/types/main/js-widgets.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/js-works/js-component.git"
+    "url": "https://github.com/js-works/js-widgets.git"
   },
   "devDependencies": {
     "@types/chai": "^4.1.3",

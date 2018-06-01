@@ -10,7 +10,7 @@ module.exports = env => {
 
   return {
     mode: modeName,
-    entry: './src/main/js-component.ts',
+    entry: './src/main/js-widgets.ts',
     devtool: modeName === 'production' ? false : 'inline-source-map',
     module: {
       unknownContextCritical: false,
@@ -39,9 +39,9 @@ module.exports = env => {
     },
     externals: ['js-spec', 'react'],
     output: {
-      filename: (typeName === 'umd' ? '' : `${typeName}/`) + `js-component.${modeName}.js`,
+      filename: (typeName === 'umd' ? '' : `${typeName}/`) + `js-widgets.${modeName}.js`,
       path: path.resolve(__dirname, 'dist'),
-      library: 'jsRemix',
+      library: 'jsWidgets',
       libraryTarget: typeName === 'cjs' ? 'commonjs2' : typeName
     },
     plugins: [
