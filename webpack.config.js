@@ -10,7 +10,7 @@ module.exports = env => {
 
   return {
     mode: modeName,
-    entry: './src/main/js-remix.ts',
+    entry: './src/main/js-component.ts',
     devtool: modeName === 'production' ? false : 'inline-source-map',
     module: {
       unknownContextCritical: false,
@@ -39,7 +39,7 @@ module.exports = env => {
     },
     externals: ['js-spec', 'react'],
     output: {
-      filename: (typeName === 'umd' ? '' : `${typeName}/`) + `js-remix.${modeName}.js`,
+      filename: (typeName === 'umd' ? '' : `${typeName}/`) + `js-component.${modeName}.js`,
       path: path.resolve(__dirname, 'dist'),
       library: 'jsRemix',
       libraryTarget: typeName === 'cjs' ? 'commonjs2' : typeName
