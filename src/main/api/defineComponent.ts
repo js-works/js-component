@@ -8,18 +8,17 @@ import React, { ComponentType, Component } from 'react';
 import { Spec, SpecValidator } from 'js-spec';
 import { POINT_CONVERSION_COMPRESSED } from 'constants';
 
-const performValidations = React.Component.name === 'Component'; // TODO!!!!!!!!
-
 export default function defineComponent<P extends ComponentProps = {}>(config: ComponentConfig<P>): ComponentType<P> {
-  const error = !performValidations ? null : validateComponentConfig(config);
+  const error = validateComponentConfig(config);
 
   if (error) {
     if (config && typeof config.displayName === 'string') {
-      throw new TypeError(`[defineComponent] Illegal component configuration for '${config.displayName}': `
-        + error.message);
+      throw new TypeError(
+        "[defineComponent] Invalid component configuration for '"
+          + `${config.displayName}': ${error.message}`);
     } else {
-      throw new TypeError('[defineComponent] Illegal component configuration: '
-        + error.message);
+      throw new TypeError(
+        `[defineComponent] Invaild component configuration: ${error.message}`);
     }
   }
 

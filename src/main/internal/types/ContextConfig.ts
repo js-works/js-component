@@ -4,5 +4,5 @@ export default interface ContextConfig<T> {
   displayName: string,
   constraint?: Validator,
   nullable?: boolean,
-  defaultValue?: T,
+  defaultValue?: T
 }

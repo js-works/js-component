@@ -7,9 +7,14 @@ export default function defineContext<T>(config: ContextConfig<T>) {
   const error = validateContextConfig(config);
 
   if (error) {
-    const errorMsg = prettifyErrorMsg(error.message, config);
+    const errorMsg = (config && typeof config === 'object'
+      && typeof config.displayName === 'string'
+      && config.displayName.trim().length > 0)
 
-    console.error(errorMsg);
+      ? '[defineContext] Invalid configuration for context '
+          + `"${config.displayName}" => ${error.message} `
+       : `[defineContext] Invalid context configuration => ${error.message}`;
+
     throw new TypeError(errorMsg);
   }
 
@@ -39,13 +44,4 @@ export default function defineContext<T>(config: ContextConfig<T>) {
   };
 
   return ret; 
-}
-
-function prettifyErrorMsg(errorMsg: string, config: ContextConfig<any>) {
-  return config && typeof config === 'object'
-    && typeof config.displayName === 'string'
-    && config.displayName.trim().length > 0
-    ? '[defineContext] Invalid configuration for context '
-      + `"${config.displayName}" => ${errorMsg} `
-    : `[defineContext] Invalid context configuration => ${errorMsg}`;
 }

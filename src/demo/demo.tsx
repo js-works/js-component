@@ -27,7 +27,7 @@ const
   });
 
 type CounterProps = {
-  label?: string | null,
+  label?: string,
   initialValue?: number,
   logger?: Logger
 }
@@ -43,7 +43,7 @@ const Counter = defineComponent<CounterProps>({
     label: {
       type: String,
       nullable: true,
-      defaultValue: null
+      defaultValue: ''
     },
 
     initialValue: {
@@ -53,7 +53,6 @@ const Counter = defineComponent<CounterProps>({
     },
 
     logger: {
-      type: Object,
       defaultValue: nopLogger, 
       inject: LoggerCtx
     }

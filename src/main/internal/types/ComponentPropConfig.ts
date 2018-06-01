@@ -10,10 +10,9 @@ export default interface ComponentPropConfig<T> {
     : T extends string
     ? StringConstructor
     : { new(): T }
-    | ObjectConstructor
 
   constraint?: Validator,
   nullable?: boolean,
-  defaultValue?: T | null,
+  defaultValue?: T,
   inject?: React.Context<T>
 }
