@@ -3,12 +3,12 @@ import validateProperties from '../internal/validation/validateProperties'
 import ComponentConfig from '../internal/types/ComponentConfig';
 import ComponentPropConfig from '../internal/types/ComponentPropConfig';
 import ComponentProps from '../internal/types/ComponentProps';
-
 import React, { ComponentType, Component } from 'react';
 import { Spec, SpecValidator } from 'js-spec';
 import { POINT_CONVERSION_COMPRESSED } from 'constants';
 
-export default function defineComponent<P extends ComponentProps = {}>(config: ComponentConfig<P>): ComponentType<P> {
+//export default function defineComponent<P extends ComponentProps>(config: ComponentConfig<P>): ComponentType<P> {
+export default function defineComponent<P extends ComponentProps>(config: ComponentConfig<P>): React.ComponentType<P> {
   const error = validateComponentConfig(config);
 
   if (error) {

@@ -97,16 +97,16 @@ const Counter = defineComponent<CounterProps>({
   }
 });
 
+
 const Demo = defineComponent({
   displayName: 'Demo',
 
   main: () => {
     return (
       h(LoggerCtx.Provider as any, { value: consoleLogger },
-        h(Counter, { label: 'Counter:' }))
+        h(Counter))
     );
   }
 });
 
-ReactDOM.render(<Demo />,
-  document.getElementById('main-content'));
+ReactDOM.render(<Demo/>, document.getElementById('main-content'));
