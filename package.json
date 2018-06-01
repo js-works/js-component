@@ -1,6 +1,6 @@
 {
   "name": "js-widgets",
-  "version": "0.0.4",
+  "version": "0.0.8",
   "license": "LGPL-3.0",
   "homepage": "https://github.com/js-works/js-widgets",
   "types": "dist/types/main/js-widgets.d.ts",
@@ -48,7 +48,7 @@
     "dist": "npm run clean && npm run test && npm run build-dev && npm run build-prod && npm run docs"
   },
   "dependencies": {
-    "js-spec": "^0.1.31",
+    "js-spec": "^0.1.32",
     "react": "^16.4.0"
   }
 }

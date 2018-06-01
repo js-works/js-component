@@ -37,7 +37,21 @@ module.exports = env => {
       extensions: ['.js', '.ts'],
       modules: ['node_modules'],
     },
-    externals: ['js-spec', 'react'],
+    externals: {
+      'js-spec': {
+        amd: 'js-spec',
+        commonjs: 'js-spec',
+        commonjs2: 'js-spec',
+        root: 'jsSpec'
+      },
+
+      'react': {
+        amd: 'react',
+        commonjs: 'react',
+        commonjs2: 'react',
+        root: 'React'
+      }
+    },
     output: {
       filename: (typeName === 'umd' ? '' : `${typeName}/`) + `js-widgets.${modeName}.js`,
       path: path.resolve(__dirname, 'dist'),
