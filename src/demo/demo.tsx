@@ -3,6 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Spec } from 'js-spec';
 
+const h = React.createElement;
+
 interface Logger extends Object {
   log(...args: any[]): void;
 }
@@ -24,14 +26,14 @@ const
 type CounterProps = {
   label?: string | null,
   initialValue?: number,
-  logger?: Logger 
+  logger?: Logger
 }
 
 type CounterState = {
   counter: number
 }
 
-const Counter = defineComponent({
+const Counter = defineComponent<CounterProps>({
   displayName: 'Counter',
 
   properties: {
@@ -58,20 +60,20 @@ const Counter = defineComponent({
     constructor(props: CounterProps) {
       super(props);
 
-      props.logger.log('Instantiating new component');
+      props.logger!.log('Instantiating new component');
 
-      this.state = { counter: props.initialValue };
+      this.state = { counter: props.initialValue as number };
       this.onClickDecrement = this.onClickDecrement.bind(this);
       this.onClickIncrement = this.onClickIncrement.bind(this);
     }
 
     onClickIncrement() {
-      this.props.logger.log('Incrementing...');
+      this.props.logger!.log('Incrementing...');
       this.setState({ counter: this.state.counter + 1 });
     }
 
     onClickDecrement() {
-      this.props.logger.log('Decrementing...');
+      this.props.logger!.log('Decrementing...');
       this.setState({ counter: this.state.counter - 1 });
     }
 
@@ -98,9 +100,8 @@ const Demo = defineComponent({
 
   main: () => {
     return (
-      <LoggerCtx.Provider value={consoleLogger}>
-        <Counter label="Counter:" />
-      </LoggerCtx.Provider>
+      h(LoggerCtx.Provider, { value: consoleLogger },
+        h(Counter, { label: 'Counter:' }))
     );
   }
 });

@@ -25,7 +25,7 @@
     "shx": "^0.2.2",
     "ts-loader": "^4.2.0",
     "ts-node": "^3.2.0",
-    "tslint": "^5.5.0",
+    "tslint": "^5.10.0",
     "typedoc": "^0.11.1",
     "typescript": "^2.8.3",
     "webpack": "^4.6.0",
@@ -49,7 +49,7 @@
     "dist": "npm run clean && npm run test && npm run build-dev && npm run build-prod && npm run docs"
   },
   "dependencies": {
-    "js-spec": "^0.1.27",
+    "js-spec": "^0.1.31",
     "react": "^16.3.2"
   }
 }

@@ -1,5 +1,7 @@
 import validateComponentConfig from '../internal/validation/validateComponentConfig';
+import validateProperties from '../internal/validation/validateProperties'
 import ComponentConfig from '../internal/types/ComponentConfig';
+import ComponentPropConfig from '../internal/types/ComponentPropConfig';
 import ComponentProps from '../internal/types/ComponentProps';
 
 import React, { ComponentType, Component } from 'react';
@@ -32,7 +34,6 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
 
 
   if (config.properties) {
-    meta.propTypes = {};
     meta.defaultProps = {};
 
     const
@@ -40,8 +41,8 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
 
     for (let i = 0; i < propNames.length; ++i) {
       const
-        propName = propNames[i],
-        propConfig = config.properties[propName],
+        propName: keyof P = propNames[i],
+        propConfig: any = config.properties[propName],
         type = propConfig.type || null,
         isPrimitiveType = type === Boolean || type === Number || type === String,
         nullable = !!propConfig.nullable,
@@ -51,7 +52,7 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
         inject = propConfig.inject || null;
 
       if (hasDefaultValue) {
-        const descr = Object.getOwnPropertyDescriptor(propConfig, 'defaultValue');
+        const descr: any = Object.getOwnPropertyDescriptor(propConfig, 'defaultValue');
 
         if (typeof descr.get !== 'function') {
           meta.defaultProps[propName] = defaultValue;
@@ -73,87 +74,24 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
 
         contextInfoPairs.push([propName, index]);
       }
-
-      if (performValidations && (type || constraint || !nullable || !hasDefaultValue)) {
-        meta.propTypes[propName] = (props: P) => {
-          let
-            it = props[propName],
-            errorMsg = null;
-
-          const
-            isSomething = it !== undefined && it !== null,
-            isDefaultValue = hasDefaultValue && it === defaultValue;
-
-          if (!hasDefaultValue && it === undefined) {
-            errorMsg = 'Property must not be undefined';
-          }
-
-          if (!errorMsg && !nullable && it === null) {
-            errorMsg = 'Property must not be null';
-          }
-
-          if (!errorMsg && isPrimitiveType && isSomething
-            && it.constructor !== type) {
-              errorMsg = 'Must be a ' + type.name.toLowerCase();
-          }
-          
-          if (!errorMsg && type && !isPrimitiveType && isSomething
-            && !(it instanceof type)) {
-            
-            if (<any>type === Array || <any>type == Date) {
-              errorMsg = 'Must be of type ' + type.name;
-            } else {
-              errorMsg = 'Illegal type';
-            }
-          }
-
-          if (!errorMsg && constraint && !isDefaultValue) {
-            const result: any = SpecValidator.from(constraint).validate(it);
-
-            if (result) {
-              errorMsg = result.message;
-            }
-          }
-
-          return !errorMsg
-              ? null
-              : new TypeError(`Illegal prop \`${propName}\` `
-                + `supplied to \'${config.displayName}'\: ${errorMsg}`);
-        }
-      }
     }
   }
 
   if (config.main.prototype instanceof React.Component) {
     const parentClass: { new(props: P): React.Component<P> } = <any>config.main;
 
-    ret = class CustomComponent extends parentClass {
-      constructor(props: P) {
-        if (performValidations) {
-          checkProps(props, config);
-        }
-
-        super(props);
-      }
-
-      static getDerivedStateFromProps(newProps: P, prevProps: P) {
-        if (performValidations) {
-          checkProps(newProps, config);
-        }
-
-        const f = (<any>parentClass).getDerivedStateFromProps;
-
-        return f ? f(newProps, prevProps) : null;
-      }
-    };
+    ret = class CustomComponent extends parentClass {};
   } else {
     ret = (props: P) => {
-      checkProps(props, config);
-
-
       return (<any>config.main)(props);
     }
   }
+
+  meta.propTypes = {
+    '*': (props: P) => {
+      return validateProperties(props, config);
+    }
+  };
 
   Object.assign(ret, meta);
   
@@ -165,7 +103,7 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
         contextValues = new Array(injectedContexts.length),
         adjustedProps = { ref, ...<any>props };
 
-      let node: React.ReactElement<any> = null;
+      let node: React.ReactElement<any> | null = null;
 
       for (let i = 0; i < injectedContexts.length; ++i) {
         if (i === 0) {
@@ -199,61 +137,3 @@ export default function defineComponent<P extends ComponentProps = {}>(config: C
 
   return ret;
 }
-
-function checkProps<P extends ComponentProps>(props: P, config: ComponentConfig<P>): void {
-  if (performValidations && props !== lastCheckedProps) {
-    lastCheckedProps = props;
-
-    const keys = !props ? null : Object.keys(props);
-
-    if (keys && keys.length > 0) {
-      let illegalKeys = null;
-
-      if (!config.properties) {
-          illegalKeys = keys;
-      } else {
-          for (let i = 0; i < keys.length; ++i) {
-              const key = keys[i];
-
-              if (!config.properties[key]) {
-                  illegalKeys = illegalKeys || [];
-
-                  illegalKeys.push(key);
-              }
-          }
-      }
-
-      if (illegalKeys) {
-          if (illegalKeys.length === 1) {
-              console.error(`Warning: Illegal prop key \`${illegalKeys[0]}\` used for ${config.displayName}`);
-          } else {
-              console.error(`Warning: Illegal props keys used for ${config.displayName}: ` + illegalKeys)
-          }
-      }
-
-      if (typeof config.validate === 'function') {
-        const result = config.validate(props);
-
-        let errorMsg = null;
-
-        if (typeof result === 'string' && result !== '') {
-          errorMsg = (<string>result).trim();
-        } else if (result instanceof Error) {
-          errorMsg = String(result.message).trim();
-        } else if (result !== undefined && result !== null && result !== true) {
-          errorMsg = '';
-        }
-
-        if (errorMsg === '') {
-            console.error(`Warning: Invalid props used for \`${config.displayName}\` => Props:`, props);
-        } else if (errorMsg) {
-            console.error(`Warning: Invalid props used for \`${config.displayName}\`: ${errorMsg} => Props:`, props);
-        }
-      }
-    }
-  }
-}
-
-// --- locals -------------------------------------------------------
-
-let lastCheckedProps: any = undefined;

@@ -12,5 +12,3 @@ export default function isContext(it: any): boolean {
         && it.Provider.$$typeof === providerSymbol
         && it.Consumer === it;
 }
-
-(<any>isContext)[specHintSymbol] = 'Must be a React context';

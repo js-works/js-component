@@ -1,5 +1,5 @@
 import ComponentConfig from '../types/ComponentConfig';
-import isContext from '../../api/isContext';
+import isContext from '../helper/isContext';
 import { Spec, SpecValidator } from 'js-spec';
 
 // --- constants needed for the validation --------------------------
@@ -53,8 +53,8 @@ const componentConfigSpec =
 
 // --- the actual configuration validation function -----------------
 
-export default function validateComponentConfig(config: ComponentConfig<any>): Error {
-  let ret = null;
+export default function validateComponentConfig(config: ComponentConfig<any>): Error | null {
+  let ret: Error | null = null;
 
   if (config === null || typeof config !== 'object') {
     ret = new TypeError('Component configuration must be an object');

@@ -1,11 +1,10 @@
 import defineComponent from './api/defineComponent';
-import isContext from './api/isContext';
 import isElement from './api/isElement';
-import isPortal from './api/isPortal';
+import isElementOfType from './api/isElementOfType';
+import isNode from './api/isNode';
+import isNodeOfType from './api/isNodeOfType';
 
 export {
     defineComponent,
-    isContext,
     isElement,
-    isPortal
 };
