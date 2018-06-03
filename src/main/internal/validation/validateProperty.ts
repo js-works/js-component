@@ -67,15 +67,23 @@ export default function validateProperty<T>(it: T, propName: string, propConfig:
           ? constraint(it)
           : constraint.validate(it);
       
-      if (err === false) {
-        errMsg = `Illegal value for property '${propName}'`;
+      if (err !== undefined && err !== null && err !== true) {
+        // everything fine
+      } else if ((err as any) === false) {
+        errMsg = `Invalid value for property '${propName}'`;
       } else if (typeof err === 'string') {
         errMsg = `Invalid value for property '${propName}' => ${err}`;
       } else if (err && typeof (err as any).message === 'string') {
         errMsg = `Invalid value for property '${propName}' => `
           + (err as any).message;
-      } else if (err) {
-        errMsg = String(err);
+      } else {
+        const msg = String(err).trim();
+
+        errMsg = `Invalid value for property '${propName}'`;
+
+        if (msg !== '') {
+          errMsg += ` => ${msg}`;
+        }
       }
     }
   
