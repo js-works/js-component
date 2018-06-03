@@ -8,7 +8,9 @@ export default function validateProperty<T>(it: T, propName: string, propConfig:
     const
       nullable = propConfig.nullable === true,
       typeConstructor = propConfig.type || null,
-      constraint = propConfig.constraint || null;
+      constraint = propConfig.constraint || null,
+      hasDefaultValue = propConfig.hasOwnProperty('defaultValue'),
+      isDefaultValue = hasDefaultValue && it === propConfig.defaultValue;
   
     if (it === undefined
       && (!propConfig.hasOwnProperty('defaultValue')
@@ -59,7 +61,7 @@ export default function validateProperty<T>(it: T, propName: string, propConfig:
       }
     }
   
-    if (!errMsg && constraint) {
+    if (!errMsg && !(nullable && it === null) && !isDefaultValue && constraint) {
       let err =
         typeof constraint === 'function' 
           ? constraint(it)
