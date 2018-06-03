@@ -55,8 +55,8 @@ export default function validateProperty<T>(it: T, propName: string, propConfig:
         
       default:
         if (typeConstructor && !(it instanceof typeConstructor)) {
-          errMsg = `The property '${propName}' must be of typeConstructor '`
-            + typeConstructor.name + "'";
+          errMsg = `The property '${propName}' must be of type `
+            + (typeConstructor.name || '<nameless>');
         }
       }
     }
@@ -67,7 +67,7 @@ export default function validateProperty<T>(it: T, propName: string, propConfig:
           ? constraint(it)
           : constraint.validate(it);
       
-      if (err !== undefined && err !== null && err !== true) {
+      if (err === undefined || err === null || err === true) {
         // everything fine
       } else if ((err as any) === false) {
         errMsg = `Invalid value for property '${propName}'`;
