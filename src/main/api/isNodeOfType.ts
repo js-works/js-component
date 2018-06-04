@@ -24,7 +24,7 @@ function isNodeOfType(type: any, it?: any): ((it: any) => boolean) | boolean {
         }
       }
     } else {
-      ret = isElementOfType(type, it); 
+      ret = it => isElementOfType(type, it); 
     }
   }
 
