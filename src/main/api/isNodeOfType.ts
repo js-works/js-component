@@ -17,15 +17,17 @@ function isNodeOfType(type: any, it?: any): ((it: any) => boolean) | boolean {
 
       for (let i = 0; i < items.length; ++i) {
         if (!isNodeOfType(types || type, items[i])) {
-            ret = false;
-            break;
+          ret = false;
+          break;
         } else {
           ret = true;
         }
       }
+    } else {
+      ret = isElementOfType(type, it); 
     }
   } else {
-    ret = it => isElementOfType(type, it); 
+    ret = it => isNodeOfType(type, it); 
   }
 
   return ret;
