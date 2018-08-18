@@ -22,7 +22,7 @@ export default function defineContext<T>(config: ContextConfig<T>) {
 
   (ret.Provider as any).propTypes = {
     '*': (props: any) => {
-      let result = validateProperty(props.value, 'value', config);
+      let result = validateProperty(props.value, 'value', config, config.displayName);
 
       if (result === null) {
         const illegalKeys =

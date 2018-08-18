@@ -6,6 +6,7 @@ export default function validateProperties<Props extends ComponentProps>(props: 
   let result = null;
 
   const
+    componentName = config.displayName,
     propNames = config.properties ? Object.keys(config.properties) : [],
     messages = [];
 
@@ -15,7 +16,7 @@ export default function validateProperties<Props extends ComponentProps>(props: 
         propName = propNames[i],
         propValue = props[propName],
         propConfig = config.properties[propName],
-        result = validateProperty(propValue, propName, propConfig!);
+        result = validateProperty(propValue, propName, propConfig!, componentName);
 
       if (result) {
         messages.push(result.message);
@@ -31,7 +32,9 @@ export default function validateProperties<Props extends ComponentProps>(props: 
     const usedPropName = usedPropNames[i];
 
     if (config.properties && !config.properties.hasOwnProperty(usedPropName)) {
-      invalidPropNames.push(usedPropName);
+      if (usedPropName !== 'key' && usedPropName !=='ref') { // TODO: => DIO bug
+        invalidPropNames.push(usedPropName);
+      }
     }
   }
 

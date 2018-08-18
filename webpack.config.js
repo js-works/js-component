@@ -55,7 +55,7 @@ module.exports = env => {
     output: {
       filename: (typeName === 'umd' ? '' : `${typeName}/`) + `js-widgets.${modeName}.js`,
       path: path.resolve(__dirname, 'dist'),
-      library: 'jsWidgets',
+      library: 'jsWidgets', 
       libraryTarget: typeName === 'cjs' ? 'commonjs2' : typeName
     },
     plugins: [

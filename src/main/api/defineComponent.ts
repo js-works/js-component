@@ -5,6 +5,14 @@ import ComponentProps from '../internal/types/ComponentProps';
 import determineDefaultProps from '../internal/util/determineDefaultProps';
 import React, { ComponentType } from 'react';
 
+let supportsClasses = false;
+
+try {
+  eval('void(class {})')
+  supportsClasses = true;
+} catch(ignore) {
+}
+
 //export default function defineComponent<P extends ComponentProps>(config: ComponentConfig<P>): ComponentType<P> {
 export default function defineComponent<P extends ComponentProps>(config: ComponentConfig<P>): React.ComponentType<P> {
   const error = validateComponentConfig(config);
@@ -57,7 +65,17 @@ export default function defineComponent<P extends ComponentProps>(config: Compon
   if (config.main.prototype instanceof React.Component) {
     const parentClass: { new(props: P): React.Component<P> } = <any>config.main;
 
-    ret = class CustomComponent extends parentClass {};
+    // ret = class CustomComponent extends parentClass {};
+
+    if (supportsClasses) {
+      ret = eval('(class CustomerComponent extends parentClass {})')
+    } else {
+      ret = <any> function (props: any) {
+        config.main.call(this, props)
+      }
+
+      ret.prototype = Object.create(config.main.prototype);
+    }
   } else {
     ret = (props: P) => {
       return (<any>config.main)(props);
