@@ -11,12 +11,11 @@ export default function validateProperty<T>(it: T, propName: string, propConfig:
       constraint = propConfig.constraint || null,
       hasDefaultValue = propConfig.hasOwnProperty('defaultValue'),
       isDefaultValue = hasDefaultValue && it === propConfig.defaultValue;
-  
-    if (it === undefined
-      && (!propConfig.hasOwnProperty('defaultValue')
-      || propConfig.defaultValue !== undefined)) {
-  
-      errMsg = `Missing mandatory property '${propName}'`;
+
+    if (it === undefined) {
+      if (!propConfig.hasOwnProperty('defaultValue')) {
+        errMsg = `Missing mandatory property '${propName}'`;
+      }
     } else if (it === null && nullable === true) {
       // Perfectly fine
     } else if (it === null && nullable === false) {

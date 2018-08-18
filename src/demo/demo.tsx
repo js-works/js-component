@@ -97,7 +97,6 @@ const Counter = defineComponent<CounterProps>({
   }
 });
 
-
 const Demo = defineComponent({
   displayName: 'Demo',
 

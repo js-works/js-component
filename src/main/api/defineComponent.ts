@@ -1,11 +1,9 @@
 import validateComponentConfig from '../internal/validation/validateComponentConfig';
 import validateProperties from '../internal/validation/validateProperties'
 import ComponentConfig from '../internal/types/ComponentConfig';
-import ComponentPropConfig from '../internal/types/ComponentPropConfig';
 import ComponentProps from '../internal/types/ComponentProps';
-import React, { ComponentType, Component } from 'react';
-import { Spec, SpecValidator } from 'js-spec';
-import { POINT_CONVERSION_COMPRESSED } from 'constants';
+import determineDefaultProps from '../internal/util/determineDefaultProps';
+import React, { ComponentType } from 'react';
 
 //export default function defineComponent<P extends ComponentProps>(config: ComponentConfig<P>): ComponentType<P> {
 export default function defineComponent<P extends ComponentProps>(config: ComponentConfig<P>): React.ComponentType<P> {
@@ -27,41 +25,19 @@ export default function defineComponent<P extends ComponentProps>(config: Compon
   const
      meta: any = {},
      injectedContexts: React.Context<any>[] = [],
-     contextInfoPairs: [string, number][] = [];
+     contextData: [string, number, () => any][] = [];
 
   meta.displayName = config.displayName;
 
-
   if (config.properties) {
-    meta.defaultProps = {};
-
     const
-      propNames = Object.keys(config.properties);
+      propNames = Object.keys(config.properties) as [keyof P & string];
 
     for (let i = 0; i < propNames.length; ++i) {
       const
-        propName: keyof P = propNames[i],
+        propName = propNames[i],
         propConfig: any = config.properties[propName],
-        type = propConfig.type || null,
-        isPrimitiveType = type === Boolean || type === Number || type === String,
-        nullable = !!propConfig.nullable,
-        constraint = propConfig.constraint || null,
-        hasDefaultValue = propConfig.hasOwnProperty('defaultValue'),
-        defaultValue = propConfig.defaultValue,
         inject = propConfig.inject || null;
-
-      if (hasDefaultValue) {
-        const descr: any = Object.getOwnPropertyDescriptor(propConfig, 'defaultValue');
-
-        if (typeof descr.get !== 'function') {
-          meta.defaultProps[propName] = defaultValue;
-        } else {
-          Object.defineProperty(meta.defaultProps, propName, {
-            enumerable: true,
-            get: descr.get
-          });
-        }
-      }
 
       if (inject) {
         let index = injectedContexts.indexOf(inject);
@@ -71,9 +47,11 @@ export default function defineComponent<P extends ComponentProps>(config: Compon
           injectedContexts.push(inject);
         }
 
-        contextInfoPairs.push([propName, index]);
+        contextData.push([propName, index, () => propConfig.defaultValue]);
       }
     }
+
+    meta.defaultProps = determineDefaultProps(config);
   }
 
   if (config.main.prototype instanceof React.Component) {
@@ -109,11 +87,15 @@ export default function defineComponent<P extends ComponentProps>(config: Compon
           node = React.createElement(injectedContexts[0].Consumer,null, (value: any) =>{
             contextValues[0] = value;
 
-            for (let j = 0; j < contextInfoPairs.length; ++j) {
-              let [propName, contextIndex] = contextInfoPairs[i];
+            for (let j = 0; j < contextData.length; ++j) {
+              let [propName, contextIndex, getDefault] = contextData[i];
 
               if (props[propName] === undefined) {
                 adjustedProps[propName] = contextValues[i];
+
+                if (adjustedProps[propName] === undefined) {
+                  adjustedProps[propName] = getDefault()
+                }
               }
             }
 
